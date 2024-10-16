@@ -4,10 +4,16 @@ const db = new sqlite3.Database(":memory:");
 // Create the books table
 db.serialize(() => {
   db.run("CREATE TABLE books (name TEXT, genre TEXT, date TEXT, author TEXT)");
-  const stmt = db.prepare("INSERT INTO books VALUES (?, ?, ?, ?)");
-  stmt.run("Book Title 1", "Fiction", "2023-01-01", "Author A");
-  stmt.run("Book Title 2", "Non-Fiction", "2023-01-02", "Author B");
-  stmt.finalize();
+
+  db.run(
+    "INSERT INTO books (name, genre, date, author) VALUES ('book-1', 'Fiction', '2024-10-01', 'Author A')"
+  );
+  db.run(
+    "INSERT INTO books (name, genre, date, author) VALUES ('book-2', 'Biography', '2024-10-02', 'Author B')"
+  );
+  db.run(
+    "INSERT INTO books (name, genre, date, author) VALUES ('book-3', 'Thriller', '2024-10-03', 'Author C')"
+  );
 });
 
 const getBooks = () => {
@@ -24,7 +30,7 @@ const getBooks = () => {
 
 const getBook = (name) => {
   return new Promise((resolve, reject) => {
-    db.get("SELECT * FROM books WHERE name = ?", [name], (err, row) => {
+    db.get("SELECT * FROM books WHERE name = ?", [name], function (err, row) {
       if (err) {
         reject(err);
       } else {
@@ -40,7 +46,7 @@ function deleteData(name) {
       if (err) {
         reject(err);
       }
-      resolve({ message: "Book deleted successfully", changes: this.changes });
+      resolve({ message: "Book deleted successfully" });
     });
   });
 }
@@ -54,7 +60,7 @@ function addData(book) {
         if (err) {
           reject(err);
         }
-        resolve({ message: "Book added successfully", id: this.lastID });
+        resolve({ message: "Book added successfully" });
       }
     );
   });

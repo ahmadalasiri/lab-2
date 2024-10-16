@@ -51,7 +51,7 @@ app.get("/getData", async (req, res) => {
 });
 
 app.delete("/deleteData", (req, res) => {
-  const { name } = req.body; // Get book name from the request body
+  const { name } = req.body;
   const deleted = deleteData(name);
   if (deleted) {
     res.send("Book deleted");
@@ -61,7 +61,7 @@ app.delete("/deleteData", (req, res) => {
 });
 
 app.put("/addData", (req, res) => {
-  const newBook = req.body; // Get new book data from the request body
+  const newBook = req.body;
   const added = addData(newBook);
   if (added) {
     res.send("Book added");
